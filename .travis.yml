@@ -3,7 +3,12 @@ go: 1.4
 sudo: false
 
 install:
-  # - go get x/y
+  - go get github.com/golang/lint/golint
+  - go get golang.org/x/crypto/bcrypt
+
+  - go get github.com/stretchr/testify
+  - go get github.com/go-sql-driver/mysql
+  - go get github.com/lib/pq
 
 script:
   - go test -cover ./...
