@@ -1,19 +1,22 @@
 language: go
+cache:
+  directories:
+    - ${GOPATH}/src/github.com/axw/gocov/gocov
+    - ${GOPATH}/src/github.com/golang/lint
+    - ${GOPATH}/src/github.com/mattn/goveralls
+    - ${GOPATH}/src/github.com/stretchr
+    - ${GOPATH}/src/golang.org/x/crypto
+    - ${GOPATH}/src/golang.org/x/tools
 go: 1.4
 sudo: false
 
-before_install:
-  - go get github.com/axw/gocov/gocov
-  - go get github.com/mattn/goveralls
-  - if ! go get code.google.com/p/go.tools/cmd/cover; then go get golang.org/x/tools/cmd/cover; fi
-
 install:
+  - go get github.com/axw/gocov/gocov
   - go get github.com/golang/lint/golint
-  - go get golang.org/x/crypto/bcrypt
-
+  - go get github.com/mattn/goveralls
   - go get github.com/stretchr/testify
-  - go get github.com/go-sql-driver/mysql
-  - go get github.com/lib/pq
+  - go get golang.org/x/crypto/bcrypt
+  - go get golang.org/x/tools/cmd/cover
 
 script:
   - go test -cover ./...
