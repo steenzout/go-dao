@@ -1,7 +1,10 @@
 language: go
 cache:
   directories:
-    - ${GOPATH}/src/github.com
+    - ${GOPATH}/src/github.com/golang
+    - ${GOPATH}/src/github.com/h12w
+    - ${GOPATH}/src/github.com/mattn
+    - ${GOPATH}/src/github.com/stretchr
     - ${GOPATH}/src/golang.org
 go: 1.4
 sudo: false
@@ -13,6 +16,7 @@ install:
   - go get github.com/stretchr/testify
   - go get golang.org/x/crypto/bcrypt
   - go get golang.org/x/tools/cmd/cover
+  - go get golang.org/x/tools/cmd/goimports
 
 script:
   - go test -v ./...
