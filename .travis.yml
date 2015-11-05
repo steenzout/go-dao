@@ -16,7 +16,8 @@ install:
   - go get github.com/lib/pq
 
 script:
-  - $HOME/gopath/bin/goveralls -service=travis-ci
   - go test -cover ./...
   - golint ./...
 
+after_success:
+  - go test -v -covermount=count -coverprofile=coverage.out ${HOME}/gopath/bin/goveralls -service=travis-ci -repotoken ${COVERALLS_TOKEN}
