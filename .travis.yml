@@ -1,12 +1,8 @@
 language: go
 cache:
   directories:
-    - ${GOPATH}/src/github.com/axw/gocov/gocov
-    - ${GOPATH}/src/github.com/golang/lint
-    - ${GOPATH}/src/github.com/mattn/goveralls
-    - ${GOPATH}/src/github.com/stretchr
-    - ${GOPATH}/src/golang.org/x/crypto
-    - ${GOPATH}/src/golang.org/x/tools
+    - ${GOPATH}/src/github.com
+    - ${GOPATH}/src/golang.org
 go: 1.4
 sudo: false
 
