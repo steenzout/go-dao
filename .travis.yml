@@ -1,26 +1,20 @@
 language: go
 cache:
   directories:
-    - ${GOPATH}/src/github.com/golang
-    - ${GOPATH}/src/github.com/h12w
-    - ${GOPATH}/src/github.com/mattn
-    - ${GOPATH}/src/github.com/stretchr
+    - ${GOPATH}/src/github.com
     - ${GOPATH}/src/golang.org
-go: 1.4
+go: 1.6
 sudo: false
 
+env:
+    CI_SERVICE=travis-ci
+
 install:
-  - go get github.com/golang/lint/golint
-  - go get github.com/h12w/gosweep
-  - go get github.com/mattn/goveralls
-  - go get github.com/stretchr/testify
-  - go get golang.org/x/crypto/bcrypt
-  - go get golang.org/x/tools/cmd/cover
-  - go get golang.org/x/tools/cmd/goimports
+  - cat requirements.txt test-requirements.txt | xargs -I {} -P 4 go get {}
 
 script:
   - go test -v ./...
 
 after_success:
   - bash ${GOPATH}/src/github.com/h12w/gosweep/gosweep.sh
-  - ${HOME}/gopath/bin/goveralls -coverprofile=profile.cov -service=travis-ci
+
