@@ -10,7 +10,7 @@ env:
     CI_SERVICE=travis-ci
 
 install:
-  - cat requirements.txt test-requirements.txt | xargs -I @@ -P 4 go get @@
+  - godep restore
 
 script:
   - go test -v ./...
