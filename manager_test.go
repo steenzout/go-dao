@@ -18,8 +18,9 @@ package dao_test
 import (
 	"github.com/stretchr/testify/suite"
 
-	"github.com/steenzout/go-dao/mock"
 	"github.com/steenzout/go-dao"
+	"github.com/steenzout/go-dao/mock"
+	mock_sql "github.com/steenzout/go-mock-database/sql"
 )
 
 const (
@@ -72,7 +73,11 @@ var _ dao.Manager = (*TestManager)(nil)
 func init() {
 	manager = TestManager{*dao.NewBaseManager()}
 
-	ds1 := mock.NewDataSource()
+	mtx := mock_sql.Tx{}
+	mtx.On("CommitTransaction").Return(nil)
+	ds1 := mock.NewDataSource().(*mock.DataSource)
+	ds1.On("Begin").Return(&mtx, nil)
+
 	manager.RegisterDataSource("mock", ds1)
 
 	factory = mock.NewFactory()

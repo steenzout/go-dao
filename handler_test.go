@@ -16,23 +16,24 @@
 package dao_test
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
-
 	"github.com/steenzout/go-dao"
+	"github.com/stretchr/testify/suite"
 )
 
-func TestProcess(t *testing.T) {
+// HandlerTestSuite test suite for the Manager struct.
+type HandlerTestSuite struct {
+	suite.Suite
+}
+
+// TestProcess test for process function.
+func (s *HandlerTestSuite) TestProcess() {
 	f := func(m dao.Manager, ctx *dao.Context) error {
 		tm := m.(*TestManager)
 		dao, err := tm.CreateMockDAO(ctx)
 		if err != nil {
 			return err
 		}
-		dao.MockSomething()
-
-		return nil
+		return dao.MockSomething()
 	}
-	assert.Nil(t, dao.Process(&manager, f))
+	s.Nil(dao.Process(&manager, f))
 }
