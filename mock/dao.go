@@ -1,6 +1,13 @@
 package mock
 
-import "github.com/steenzout/go-dao"
+import (
+	"github.com/steenzout/go-dao"
+)
+
+const (
+	// DAO_MOCK unique data access object name for the MockDAO interface.
+	DAO_MOCK = "go-dao.mock.MockDAO"
+)
 
 // MockDAO interface for the mock data access object.
 type MockDAO interface {
@@ -10,7 +17,7 @@ type MockDAO interface {
 
 // MockDAOImpl mock implementation of the MockDAO interface.
 type MockDAOImpl struct {
-	dao.BaseDataAccessObject
+	*dao.DataAccessObject
 }
 
 // MockSomething does nothing.

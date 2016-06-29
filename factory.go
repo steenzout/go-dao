@@ -15,47 +15,42 @@
 //
 package dao
 
+import "fmt"
+
 // Factory interface for data access object factories.
 type Factory interface {
-	// CreateBaseDAO returns a generic data access object.
-	CreateBaseDAO(ctx *Context) (*BaseDataAccessObject, error)
-	// DataSource returns this factory's target data source.
-	DataSource() DataSource
-	// SetDataSource sets this factory's target data source.
-	SetDataSource(ds DataSource)
+	DataAccessObjects() []string
+	NewDataAccessObject(ctx *Context, nm string) (interface{}, error)
 }
+
+// FactoryFunc function to generate data access object implementations.
+type FactoryFunc func (ctx *Context, source string) (interface{}, error)
 
 // BaseFactory
 type BaseFactory struct {
-	Source DataSource
+	// Source target data source against which to generate data access objects.
+	Source *DataSource
+	// FactoryFuncs maps data access object names to the factory functions.
+	FactoryFuncs map[string]FactoryFunc
 }
 
-// CreateBaseDAO creates a BaseDAO with an active database transaction.
-func (f *BaseFactory) CreateBaseDAO(ctx *Context) (*BaseDataAccessObject, error) {
+// DataAccessObjects returns the list of data access object names the factory can generate.
+func (f *BaseFactory) DataAccessObjects() []string {
+	keys := make([]string, 0, len(f.FactoryFuncs))
+	for k := range f.FactoryFuncs {
+		keys = append(keys, k)
+	}
+	return keys
+}
 
-	dao, err := NewBaseDataAccessObject(ctx, f)
-	if err != nil {
-		return nil, err
+func (f *BaseFactory) NewDataAccessObject(ctx *Context, nm string) (interface{}, error){
+
+	ff, found := f.FactoryFuncs[nm]
+	if !found {
+		return nil, fmt.Errorf("this factory is not able to generate %s data access objects", nm)
 	}
 
-	return dao, nil
-}
-
-// DataSource returns this factory's data source.
-func (f *BaseFactory) DataSource() DataSource {
-	return f.Source
-}
-
-// SetDataSource sets this factory's data source.
-func (f *BaseFactory) SetDataSource(ds DataSource) {
-	f.Source = ds
-}
-
-// NewBaseFactory returns a generic factory.
-func NewBaseFactory() *BaseFactory {
-	return &BaseFactory{
-		Source: nil,
-	}
+	return ff(ctx, f.Source.Name)
 }
 
 var _ Factory = (*BaseFactory)(nil)

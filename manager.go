@@ -15,56 +15,69 @@
 //
 package dao
 
-import "database/sql"
+import "fmt"
 
 // Manager
 type Manager interface {
 	CommitTransaction(ctx *Context) error
+	CreateDAO(ctx *Context, nm string) (interface{}, error)
 	EndTransaction(ctx *Context)
-	RegisterDataSource(nm string, ds DataSource)
-	RegisterFactory(nm string, f Factory)
+	RegisterDataSource(nm string, ds *DataSource)
+	RegisterFactory(f Factory)
 	RollbackTransaction(ctx *Context) error
-	Source(nm string) DataSource
+	Source(nm string) *DataSource
 	StartTransaction() (*Context, error)
 }
 
 // BaseManager base implementation of the Manager interface.
 type BaseManager struct {
-	Sources   map[string]DataSource
+	Sources   map[string]*DataSource
 	Factories map[string]Factory
 }
 
 // CommitTransaction
 func (m *BaseManager) CommitTransaction(ctx *Context) error {
-	for _, tx := range ctx.txs {
-		if err := tx.Commit(); err != nil {
+	for _, dao := range ctx.daos {
+		if err := dao.Tx.Commit(); err != nil {
 			return err
 		}
 	}
 	return nil
 }
 
+// CreateDAO returns a new data access object.
+func (m *BaseManager) CreateDAO(ctx *Context, nm string) (interface{}, error) {
+	// factory
+	fty, found := m.Factories[nm]
+	if !found {
+		return nil, fmt.Errorf("no factory for data access object %s", nm)
+	}
+	return fty.NewDataAccessObject(ctx, nm)
+}
+
 // EndTransaction
 func (m *BaseManager) EndTransaction(ctx *Context) {
-	ctx.txs = map[string]*sql.Tx{}
+	ctx.daos = map[string]*DataAccessObject{}
 }
 
 // RegisterDataSource registers a new mapping between a name and a data source.
-func (m *BaseManager) RegisterDataSource(nm string, ds DataSource) {
+func (m *BaseManager) RegisterDataSource(nm string, ds *DataSource) {
 	m.Sources[nm] = ds
 }
 
-// RegisterFactory registers a new mapping between a DAO name and a DAO factory.
-func (m *BaseManager) RegisterFactory(nm string, f Factory) {
-	m.Factories[nm] = f
+// RegisterFactory registers the given factory with the data access object names it can generate.
+func (m *BaseManager) RegisterFactory(f Factory) {
+	for _, nm := range f.DataAccessObjects() {
+		m.Factories[nm] = f
+	}
 }
 
 // RollbackTransaction
 func (m *BaseManager) RollbackTransaction(ctx *Context) error {
 	var errout error
 
-	for _, tx := range ctx.txs {
-		if err := tx.Rollback(); err != nil {
+	for _, dao := range ctx.daos {
+		if err := dao.Tx.Rollback(); err != nil {
 			errout = err
 		}
 	}
@@ -72,7 +85,7 @@ func (m *BaseManager) RollbackTransaction(ctx *Context) error {
 }
 
 // Source returns the data source associated with the given name.
-func (m *BaseManager) Source(nm string) DataSource {
+func (m *BaseManager) Source(nm string) *DataSource {
 	return m.Sources[nm]
 }
 
@@ -84,7 +97,7 @@ func (m *BaseManager) StartTransaction() (*Context, error) {
 // NewBaseManager returns a generic Manager implementation.
 func NewBaseManager() *BaseManager {
 	return &BaseManager{
-		Sources:   map[string]DataSource{},
+		Sources:   map[string]*DataSource{},
 		Factories: map[string]Factory{},
 	}
 }

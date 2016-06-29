@@ -24,25 +24,39 @@ import (
 type Context struct {
 	// Manager the data access object manager.
 	manager Manager
-	// transaction maps data source names with active database transactions.
-	txs map[string]*sql.Tx
+	// daos maps data source names with active database transactions.
+	daos    map[string]*DataAccessObject
 }
 
-// Transaction returns an active database transaction.
-func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
-	tx, found := ctx.txs[nm]
-	if !found {
-		source := ctx.manager.Source(nm)
-		if source == nil {
-			return nil, fmt.Errorf("Invalid source")
-		}
+// DataAccessObject returns a data access object with an active database transaction.
+func (ctx *Context) NewDataAccessObject(nm string) (*DataAccessObject, error) {
+	var dao *DataAccessObject
 
-		tx, err := source.Begin()
+	dao, found := ctx.daos[nm]
+	if !found {
+		tx, err := ctx.Transaction(nm)
 		if err != nil {
 			return nil, err
 		}
-		ctx.txs[nm] = tx
-		return tx, nil
+
+		dao := &DataAccessObject{Tx: tx}
+		ctx.daos[nm] = dao
+		return dao, nil
+	}
+	return dao, nil
+}
+
+// Transaction returns a new database transaction from the given data source.
+func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
+
+	source := ctx.manager.Source(nm)
+	if source == nil {
+		return nil, fmt.Errorf("Invalid source")
+	}
+
+	tx, err := source.DB.Begin()
+	if err != nil {
+		return nil, err
 	}
 	return tx, nil
 }
@@ -51,6 +65,6 @@ func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
 func NewContext(m Manager) *Context {
 	return &Context{
 		manager: m,
-		txs:     map[string]*sql.Tx{},
+		daos:     map[string]*DataAccessObject{},
 	}
 }

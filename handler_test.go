@@ -17,23 +17,22 @@ package dao_test
 
 import (
 	"github.com/steenzout/go-dao"
-	"github.com/stretchr/testify/suite"
+	"github.com/steenzout/go-dao/mock"
 )
 
 // HandlerTestSuite test suite for the Manager struct.
 type HandlerTestSuite struct {
-	suite.Suite
+	DatabaseTestSuite
 }
 
 // TestProcess test for process function.
 func (s *HandlerTestSuite) TestProcess() {
 	f := func(m dao.Manager, ctx *dao.Context) error {
-		tm := m.(*TestManager)
-		dao, err := tm.CreateMockDAO(ctx)
+		dao, err := m.CreateDAO(ctx, mock.DAO_MOCK)
 		if err != nil {
 			return err
 		}
-		return dao.MockSomething()
+		return dao.(mock.MockDAO).MockSomething()
 	}
-	s.Nil(dao.Process(&manager, f))
+	s.Nil(dao.Process(s.manager, f))
 }
