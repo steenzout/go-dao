@@ -10,6 +10,7 @@ env:
     CI_SERVICE=travis-ci
 
 install:
+  - go get github.com/tools/godep
   - godep restore
 
 script:
