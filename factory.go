@@ -20,14 +20,14 @@ type Factory interface {
 	// CreateBaseDAO returns a generic data access object.
 	CreateBaseDAO(ctx *Context) (*BaseDataAccessObject, error)
 	// DataSource returns this factory's target data source.
-	DataSource() *DataSource
+	DataSource() DataSource
 	// SetDataSource sets this factory's target data source.
-	SetDataSource(ds *DataSource)
+	SetDataSource(ds DataSource)
 }
 
 // BaseFactory
 type BaseFactory struct {
-	Source *DataSource
+	Source DataSource
 }
 
 // CreateBaseDAO creates a BaseDAO with an active database transaction.
@@ -42,12 +42,12 @@ func (f *BaseFactory) CreateBaseDAO(ctx *Context) (*BaseDataAccessObject, error)
 }
 
 // DataSource returns this factory's data source.
-func (f *BaseFactory) DataSource() *DataSource {
+func (f *BaseFactory) DataSource() DataSource {
 	return f.Source
 }
 
 // SetDataSource sets this factory's data source.
-func (f *BaseFactory) SetDataSource(ds *DataSource) {
+func (f *BaseFactory) SetDataSource(ds DataSource) {
 	f.Source = ds
 }
 

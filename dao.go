@@ -52,7 +52,7 @@ func NewBaseDataAccessObject(ctx *Context, f Factory) (*BaseDataAccessObject, er
 		return nil, fmt.Errorf("unknown source")
 	}
 
-	tx, err := ctx.Transaction(f.DataSource().Name)
+	tx, err := ctx.Transaction(f.DataSource().Name())
 	if err != nil {
 		return nil, err
 	}

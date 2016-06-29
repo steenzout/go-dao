@@ -36,11 +36,8 @@ func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
 		if source == nil {
 			return nil, fmt.Errorf("Invalid source")
 		}
-		if source.DB == nil {
-			return nil, fmt.Errorf("Invalid database")
-		}
 
-		tx, err := source.DB.Begin()
+		tx, err := source.Begin()
 		if err != nil {
 			return nil, err
 		}

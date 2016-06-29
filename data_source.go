@@ -15,12 +15,31 @@
 //
 package dao
 
-import "database/sql"
+import (
+	"database/sql"
+	"fmt"
+)
 
-// DataSource struct to represent data sources.
-type DataSource struct {
+// DataSource interface that needs to be implemented by data sources.
+type DataSource interface {
+	// Begin starts a transaction.
+	// The isolation level is dependent on the driver.
+	Begin() (*sql.Tx, error)
+}
+
+// DatabaseDataSource struct to represent data sources whose target are databases.
+type DatabaseDataSource struct {
 	// DB the database.
 	DB *sql.DB
 	// Name the name of the data source.
 	Name string
+}
+
+// Begin starts a transaction.
+// The isolation level is dependent on the driver.
+func (ds *DatabaseDataSource) Begin() (*sql.Tx, error) {
+	if ds.DB == nil {
+		return nil, fmt.Errorf("no database was set")
+	}
+	return ds.DB.Begin()
 }

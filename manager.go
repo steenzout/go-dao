@@ -21,16 +21,16 @@ import "database/sql"
 type Manager interface {
 	CommitTransaction(ctx *Context) error
 	EndTransaction(ctx *Context)
-	RegisterDataSource(nm string, ds *DataSource)
+	RegisterDataSource(nm string, ds DataSource)
 	RegisterFactory(nm string, f Factory)
 	RollbackTransaction(ctx *Context) error
-	Source(nm string) *DataSource
+	Source(nm string) DataSource
 	StartTransaction() (*Context, error)
 }
 
 // BaseManager base implementation of the Manager interface.
 type BaseManager struct {
-	Sources map[string]*DataSource
+	Sources map[string]DataSource
 	Factories map[string]Factory
 }
 
@@ -50,7 +50,7 @@ func (m *BaseManager) EndTransaction(ctx *Context) {
 }
 
 // RegisterDataSource registers a new mapping between a name and a data source.
-func (m *BaseManager) RegisterDataSource(nm string, ds *DataSource) {
+func (m *BaseManager) RegisterDataSource(nm string, ds DataSource) {
 	m.Sources[nm] = ds
 }
 
@@ -72,7 +72,7 @@ func (m *BaseManager) RollbackTransaction(ctx *Context) error {
 }
 
 // Source returns the data source associated with the given name.
-func (m *BaseManager) Source(nm string) *DataSource {
+func (m *BaseManager) Source(nm string) DataSource {
 	return m.Sources[nm]
 }
 
@@ -84,7 +84,7 @@ func (m *BaseManager) StartTransaction() (*Context, error) {
 // NewBaseManager returns a generic Manager implementation.
 func NewBaseManager() *BaseManager {
 	return &BaseManager{
-		Sources: map[string]*DataSource{},
+		Sources: map[string]DataSource{},
 		Factories: map[string]Factory{},
 	}
 }
