@@ -5,12 +5,13 @@ import (
 	"fmt"
 
 	"github.com/steenzout/go-dao"
-
 	mock_sql "github.com/steenzout/go-mock-database/sql"
+	"github.com/stretchr/testify/mock"
 )
 
 type DataSource struct {
-	DB *mock_sql.DB
+	mock.Mock
+	DB   *mock_sql.DB
 	name string
 }
 
@@ -32,7 +33,7 @@ var _ (dao.DataSource) = (*DataSource)(nil)
 
 func NewDataSource() dao.DataSource {
 	return &DataSource{
-		DB: &mock_sql.DB{},
+		DB:   &mock_sql.DB{},
 		name: "mock",
 	}
 }
