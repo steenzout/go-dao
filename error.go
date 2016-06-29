@@ -31,7 +31,7 @@ type UnknownDAOError struct {
 
 // Error returns the error message.
 func (e *UnknownDAOError) Error() string {
-  	return fmt.Sprintf(ERR_UNKNOWN_DAO, e.name)
+	return fmt.Sprintf(ERR_UNKNOWN_DAO, e.name)
 }
 
 // NewUnknownDAO returns a UnknownDAO error.
