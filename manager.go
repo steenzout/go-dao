@@ -30,7 +30,7 @@ type Manager interface {
 
 // BaseManager base implementation of the Manager interface.
 type BaseManager struct {
-	Sources map[string]DataSource
+	Sources   map[string]DataSource
 	Factories map[string]Factory
 }
 
@@ -84,7 +84,7 @@ func (m *BaseManager) StartTransaction() (*Context, error) {
 // NewBaseManager returns a generic Manager implementation.
 func NewBaseManager() *BaseManager {
 	return &BaseManager{
-		Sources: map[string]DataSource{},
+		Sources:   map[string]DataSource{},
 		Factories: map[string]Factory{},
 	}
 }

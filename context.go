@@ -25,7 +25,7 @@ type Context struct {
 	// Manager the data access object manager.
 	manager Manager
 	// transaction maps data source names with active database transactions.
-	txs     map[string]*sql.Tx
+	txs map[string]*sql.Tx
 }
 
 // Transaction returns an active database transaction.
@@ -51,6 +51,6 @@ func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
 func NewContext(m Manager) *Context {
 	return &Context{
 		manager: m,
-		txs: map[string]*sql.Tx{},
+		txs:     map[string]*sql.Tx{},
 	}
 }
