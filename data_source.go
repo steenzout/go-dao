@@ -25,6 +25,8 @@ type DataSource interface {
 	// Begin starts a transaction.
 	// The isolation level is dependent on the driver.
 	Begin() (*sql.Tx, error)
+	// Name returns the data source name.
+	Name() string
 }
 
 // DatabaseDataSource struct to represent data sources whose target are databases.
@@ -32,7 +34,7 @@ type DatabaseDataSource struct {
 	// DB the database.
 	DB *sql.DB
 	// Name the name of the data source.
-	Name string
+	name string
 }
 
 // Begin starts a transaction.
@@ -42,4 +44,9 @@ func (ds *DatabaseDataSource) Begin() (*sql.Tx, error) {
 		return nil, fmt.Errorf("no database was set")
 	}
 	return ds.DB.Begin()
+}
+
+// Name returns the data source name.
+func (ds *DatabaseDataSource) GetName() string {
+	return ds.name
 }
