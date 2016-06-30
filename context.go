@@ -31,7 +31,7 @@ type Context struct {
 	daos map[string]*DataAccessObject
 }
 
-// DataAccessObject returns a data access object with an active database transaction.
+// NewDataAccessObject returns a data access object with an active database transaction.
 func (ctx *Context) NewDataAccessObject(nm string) (*DataAccessObject, error) {
 	var dao *DataAccessObject
 
