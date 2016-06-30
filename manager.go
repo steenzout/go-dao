@@ -22,7 +22,7 @@ type Manager interface {
 	CommitTransaction(ctx *Context) error
 	CreateDAO(ctx *Context, nm string) (interface{}, error)
 	EndTransaction(ctx *Context)
-	RegisterDataSource(nm string, ds *DataSource)
+	RegisterDataSource(ds *DataSource)
 	RegisterFactory(f Factory)
 	RollbackTransaction(ctx *Context) error
 	Source(nm string) *DataSource
@@ -61,8 +61,8 @@ func (m *BaseManager) EndTransaction(ctx *Context) {
 }
 
 // RegisterDataSource registers a new mapping between a name and a data source.
-func (m *BaseManager) RegisterDataSource(nm string, ds *DataSource) {
-	m.Sources[nm] = ds
+func (m *BaseManager) RegisterDataSource(ds *DataSource) {
+	m.Sources[ds.Name] = ds
 }
 
 // RegisterFactory registers the given factory with the data access object names it can generate.

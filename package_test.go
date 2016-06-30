@@ -32,6 +32,7 @@ func init() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	log.Printf("connection to %v was established", dbinfo)
 }
 
 type DatabaseTestSuite struct {
@@ -48,7 +49,7 @@ func (s *DatabaseTestSuite) SetupSuite() {
 	}
 
 	s.manager = dao.NewBaseManager()
-	s.manager.RegisterDataSource("mock", ds)
+	s.manager.RegisterDataSource(ds)
 
 	s.factory = mock.NewFactory(ds)
 	s.manager.RegisterFactory(s.factory)

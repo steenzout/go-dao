@@ -18,6 +18,8 @@ package dao
 import (
 	"database/sql"
 	"fmt"
+
+	"github.com/davecgh/go-spew/spew"
 )
 
 // Context struct to hold database transaction contexts.
@@ -51,7 +53,9 @@ func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
 
 	source := ctx.manager.Source(nm)
 	if source == nil {
-		return nil, fmt.Errorf("Invalid source")
+		spew.Printf("%+v", ctx.manager)
+		spew.Printf("%+v", ctx)
+		return nil, fmt.Errorf("source %s was not found", nm)
 	}
 
 	tx, err := source.DB.Begin()
