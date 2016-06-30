@@ -9,7 +9,7 @@ sudo: false
 env:
     CI_SERVICE=travis-ci
 
-after_install:
+before_install:
   - go get github.com/h12w/gosweep
 
 before_script:
