@@ -10,8 +10,11 @@ env:
     CI_SERVICE=travis-ci
 
 before_install:
+  - go get golang.org/x/tools/cmd/goimports
+  - go get github.com/golang/lint/golint
   - go get github.com/h12w/gosweep
   - go get github.com/mattn/goveralls
+  - go get golang.org/x/tools/cmd/goimports
 
 before_script:
   - psql -c 'create database travis_ci_test;' -U postgres
