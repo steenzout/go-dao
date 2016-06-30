@@ -25,7 +25,7 @@ const (
 	UnknownFactory = "There is no factory registered for the %s data access object"
 )
 
-// UnknownDAOError no data access object implementation registered with the given name.
+// UnknownDAO no data access object implementation registered with the given name.
 type UnknownDAO struct {
 	name string
 }
@@ -42,7 +42,7 @@ func NewUnknownDAO(nm string) error {
 	}
 }
 
-// UnknownFactoryError no data access object implementation registered with the given name.
+// UnknownFactory no data access object implementation registered with the given name.
 type UnknownFactory struct {
 	name string
 }
