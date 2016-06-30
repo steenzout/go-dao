@@ -9,6 +9,9 @@ sudo: false
 env:
     CI_SERVICE=travis-ci
 
+before_script:
+  - psql -c 'create database travis_ci_test;' -U postgres
+
 script:
   - go test -v ./...
 
