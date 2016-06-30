@@ -1,3 +1,4 @@
+// Package dao provides a data access object library.
 //
 // Copyright 2016 Pedro Salgado
 //
@@ -27,7 +28,7 @@ type Context struct {
 	// Manager the data access object manager.
 	manager Manager
 	// daos maps data source names with active database transactions.
-	daos    map[string]*DataAccessObject
+	daos map[string]*DataAccessObject
 }
 
 // DataAccessObject returns a data access object with an active database transaction.
@@ -69,6 +70,6 @@ func (ctx *Context) Transaction(nm string) (*sql.Tx, error) {
 func NewContext(m Manager) *Context {
 	return &Context{
 		manager: m,
-		daos:     map[string]*DataAccessObject{},
+		daos:    map[string]*DataAccessObject{},
 	}
 }

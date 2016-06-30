@@ -24,7 +24,7 @@ type Factory interface {
 }
 
 // FactoryFunc function to generate data access object implementations.
-type FactoryFunc func (ctx *Context, source string) (interface{}, error)
+type FactoryFunc func(ctx *Context, source string) (interface{}, error)
 
 // BaseFactory
 type BaseFactory struct {
@@ -43,7 +43,7 @@ func (f *BaseFactory) DataAccessObjects() []string {
 	return keys
 }
 
-func (f *BaseFactory) NewDataAccessObject(ctx *Context, nm string) (interface{}, error){
+func (f *BaseFactory) NewDataAccessObject(ctx *Context, nm string) (interface{}, error) {
 
 	ff, found := f.FactoryFuncs[nm]
 	if !found {

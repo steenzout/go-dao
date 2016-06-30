@@ -14,7 +14,6 @@ import (
 	"github.com/stretchr/testify/suite"
 )
 
-
 var db *sql.DB
 
 func init() {
@@ -44,7 +43,7 @@ type DatabaseTestSuite struct {
 func (s *DatabaseTestSuite) SetupSuite() {
 
 	ds := &dao.DataSource{
-		DB: db,
+		DB:   db,
 		Name: "travis_ci_test",
 	}
 

@@ -1,3 +1,4 @@
+// Package dao provides a data access object library.
 //
 // Copyright 2016 Pedro Salgado
 //
