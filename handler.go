@@ -23,14 +23,14 @@ type TransactionFunc func(m Manager, ctx *Context, args ...interface{}) error
 type TransactionFunc2 func(m Manager, ctx *Context, args ...interface{}) (interface{}, error)
 
 // Process wrap database transaction handling around given TransactionFunc.
-func Process(m Manager, f TransactionFunc) error {
+func Process(m Manager, f TransactionFunc, args ...interface{}) error {
 	ctx, err := m.StartTransaction()
 	if err != nil {
 		return err
 	}
 	defer m.EndTransaction(ctx)
 
-	err = f(m, ctx)
+	err = f(m, ctx, args...)
 	if err != nil {
 		m.RollbackTransaction(ctx)
 		return err
@@ -44,14 +44,14 @@ func Process(m Manager, f TransactionFunc) error {
 }
 
 // Process2 wrap database transaction handling around given TransactionFunc2.
-func Process2(m Manager, f TransactionFunc2) (interface{}, error) {
+func Process2(m Manager, f TransactionFunc2, args ...interface{}) (interface{}, error) {
 	ctx, err := m.StartTransaction()
 	if err != nil {
 		return nil, err
 	}
 	defer m.EndTransaction(ctx)
 
-	obj, err := f(m, ctx)
+	obj, err := f(m, ctx, args...)
 	if err != nil {
 		m.RollbackTransaction(ctx)
 		return nil, err
