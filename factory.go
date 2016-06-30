@@ -1,3 +1,4 @@
+// Package dao provides a data access object library.
 //
 // Copyright 2016 Pedro Salgado
 //
@@ -19,14 +20,16 @@ import "fmt"
 
 // Factory interface for data access object factories.
 type Factory interface {
+	// DataAccessObjects returns the list of data access object names the factory can generate.
 	DataAccessObjects() []string
+	// NewDataAccessObject returns a data access object.
 	NewDataAccessObject(ctx *Context, nm string) (interface{}, error)
 }
 
 // FactoryFunc function to generate data access object implementations.
 type FactoryFunc func(ctx *Context, source string) (interface{}, error)
 
-// BaseFactory
+// BaseFactory base type to build data access object factories.
 type BaseFactory struct {
 	// Source target data source against which to generate data access objects.
 	Source *DataSource
@@ -43,6 +46,7 @@ func (f *BaseFactory) DataAccessObjects() []string {
 	return keys
 }
 
+// NewDataAccessObject returns a data access object.
 func (f *BaseFactory) NewDataAccessObject(ctx *Context, nm string) (interface{}, error) {
 
 	ff, found := f.FactoryFuncs[nm]
