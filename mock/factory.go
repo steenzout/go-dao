@@ -4,12 +4,12 @@ import (
 	"github.com/steenzout/go-dao"
 )
 
-// MockFactory struct to create mock implementations of data access objects.
-type MockFactory struct {
+// Factory struct to create mock implementations of data access objects.
+type Factory struct {
 	dao.BaseFactory
 }
 
-var _ dao.Factory = (*MockFactory)(nil)
+var _ dao.Factory = (*Factory)(nil)
 
 // mockff returns an implementation of the mock data access object interface.
 var mockff dao.FactoryFunc = func(ctx *dao.Context, source string) (interface{}, error) {
@@ -22,11 +22,11 @@ var mockff dao.FactoryFunc = func(ctx *dao.Context, source string) (interface{},
 
 // NewFactory creates a factory for mock DAO implementations.
 func NewFactory(ds *dao.DataSource) dao.Factory {
-	return &MockFactory{
+	return &Factory{
 		dao.BaseFactory{
 			Source: ds,
 			FactoryFuncs: map[string]dao.FactoryFunc{
-				DAO_MOCK: mockff,
+				DAOMock: mockff,
 			},
 		},
 	}

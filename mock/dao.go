@@ -5,8 +5,8 @@ import (
 )
 
 const (
-	// DAO_MOCK unique data access object name for the MockDAO interface.
-	DAO_MOCK = "go-dao.mock.MockDAO"
+	// DAOMock unique data access object name for the MockDAO interface.
+	DAOMock = "go-dao.mock.MockDAO"
 )
 
 // MockDAO interface for the mock data access object.
