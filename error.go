@@ -19,10 +19,10 @@ package dao
 import "fmt"
 
 const (
-	// ERR_UNKNOWN_DAO error message format for the UnknownDAOError.
-	ERR_UNKNOWN_DAO = "There is no implementation registered for the %s data access object"
-	// ERR_UNKNOWN_FACTORY error message format for the UnknownFactoryError.
-	ERR_UNKNOWN_FACTORY = "There is no factory registered for the %s data access object"
+	// ErrorUnknownDAO error message format for the UnknownDAOError.
+	ErrorUnknownDAO = "There is no implementation registered for the %s data access object"
+	// ErrorUnknownFactory error message format for the UnknownFactoryError.
+	ErrorUnknownFactory = "There is no factory registered for the %s data access object"
 )
 
 // UnknownDAOError no data access object implementation registered with the given name.
@@ -32,7 +32,7 @@ type UnknownDAOError struct {
 
 // Error returns the error message.
 func (e *UnknownDAOError) Error() string {
-	return fmt.Sprintf(ERR_UNKNOWN_DAO, e.name)
+	return fmt.Sprintf(ErrorUnknownDAO, e.name)
 }
 
 // NewUnknownDAO returns a UnknownDAO error.
@@ -49,7 +49,7 @@ type UnknownFactoryError struct {
 
 // Error returns the error message.
 func (e *UnknownFactoryError) Error() string {
-	return fmt.Sprintf(ERR_UNKNOWN_FACTORY, e.name)
+	return fmt.Sprintf(ErrorUnknownFactory, e.name)
 }
 
 // NewUnknownFactoryError returns a UnknownFactoryError error.
