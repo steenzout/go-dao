@@ -19,45 +19,45 @@ package dao
 import "fmt"
 
 const (
-	// ErrorUnknownDAO error message format for the UnknownDAOError.
-	ErrorUnknownDAO = "There is no implementation registered for the %s data access object"
-	// ErrorUnknownFactory error message format for the UnknownFactoryError.
-	ErrorUnknownFactory = "There is no factory registered for the %s data access object"
+	// UnknownDAO error message format for the UnknownDAOError.
+	UnknownDAO = "There is no implementation registered for the %s data access object"
+	// UnknownFactory error message format for the UnknownFactoryError.
+	UnknownFactory = "There is no factory registered for the %s data access object"
 )
 
 // UnknownDAOError no data access object implementation registered with the given name.
-type UnknownDAOError struct {
+type UnknownDAO struct {
 	name string
 }
 
 // Error returns the error message.
-func (e *UnknownDAOError) Error() string {
-	return fmt.Sprintf(ErrorUnknownDAO, e.name)
+func (e *UnknownDAO) Error() string {
+	return fmt.Sprintf(UnknownDAO, e.name)
 }
 
-// NewUnknownDAOError returns a UnknownDAO error.
-func NewUnknownDAOError(nm string) error {
-	return &UnknownDAOError{
+// NewUnknownDAO returns a UnknownDAO error.
+func NewUnknownDAO(nm string) error {
+	return &UnknownDAO{
 		name: nm,
 	}
 }
 
 // UnknownFactoryError no data access object implementation registered with the given name.
-type UnknownFactoryError struct {
+type UnknownFactory struct {
 	name string
 }
 
 // Error returns the error message.
-func (e *UnknownFactoryError) Error() string {
-	return fmt.Sprintf(ErrorUnknownFactory, e.name)
+func (e *UnknownFactory) Error() string {
+	return fmt.Sprintf(UnknownFactory, e.name)
 }
 
-// NewUnknownFactoryError returns a UnknownFactoryError error.
-func NewUnknownFactoryError(nm string) error {
-	return &UnknownFactoryError{
+// NewUnknownFactory returns a UnknownFactoryError error.
+func NewUnknownFactory(nm string) error {
+	return &UnknownFactory{
 		name: nm,
 	}
 }
 
-var _ error = (*UnknownDAOError)(nil)
-var _ error = (*UnknownFactoryError)(nil)
+var _ error = (*UnknownDAO)(nil)
+var _ error = (*UnknownFactory)(nil)

@@ -32,7 +32,7 @@ func (s *ManagerTestSuite) Test() {
 	s.NotNil(ctx)
 	defer s.manager.EndTransaction(ctx)
 
-	dao, err := s.manager.CreateDAO(ctx, mock.DAO_MOCK)
+	dao, err := s.manager.CreateDAO(ctx, mock.DAOMock)
 	if err != nil {
 		s.Fail(err.Error())
 	}

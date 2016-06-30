@@ -28,7 +28,7 @@ type HandlerTestSuite struct {
 // TestProcess test for process function.
 func (s *HandlerTestSuite) TestProcess() {
 	f := func(m dao.Manager, ctx *dao.Context) error {
-		dao, err := m.CreateDAO(ctx, mock.DAO_MOCK)
+		dao, err := m.CreateDAO(ctx, mock.DAOMock)
 		if err != nil {
 			return err
 		}
