@@ -16,10 +16,13 @@
 //
 package dao
 
+// TransactionFunc definition of a function wrapped in a database transaction context.
 type TransactionFunc func(m Manager, ctx *Context) error
 
+// TransactionFunc2 variant of TransactionFunc.
 type TransactionFunc2 func(m Manager, ctx *Context) (interface{}, error)
 
+// Process wrap database transaction handling around given TransactionFunc.
 func Process(m Manager, f TransactionFunc) error {
 	ctx, err := m.StartTransaction()
 	if err != nil {
@@ -40,6 +43,7 @@ func Process(m Manager, f TransactionFunc) error {
 	return nil
 }
 
+// Process2 wrap database transaction handling around given TransactionFunc2.
 func Process2(m Manager, f TransactionFunc2) (interface{}, error) {
 	ctx, err := m.StartTransaction()
 	if err != nil {
