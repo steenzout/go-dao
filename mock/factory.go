@@ -11,9 +11,8 @@ type MockFactory struct {
 
 var _ dao.Factory = (*MockFactory)(nil)
 
-
 // mockff returns an implementation of the mock data access object interface.
-var mockff dao.FactoryFunc = func (ctx *dao.Context, source string) (interface{}, error) {
+var mockff dao.FactoryFunc = func(ctx *dao.Context, source string) (interface{}, error) {
 	base, err := ctx.NewDataAccessObject(source)
 	if err != nil {
 		return nil, err
