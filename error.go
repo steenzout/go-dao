@@ -35,7 +35,7 @@ func (e *UnknownDAOError) Error() string {
 	return fmt.Sprintf(ErrorUnknownDAO, e.name)
 }
 
-// NewUnknownDAO returns a UnknownDAO error.
+// NewUnknownDAOError returns a UnknownDAO error.
 func NewUnknownDAOError(nm string) error {
 	return &UnknownDAOError{
 		name: nm,
