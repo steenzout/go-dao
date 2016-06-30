@@ -18,15 +18,23 @@ package dao
 
 import "fmt"
 
-// Manager
+// Manager interface for data access object managers.
 type Manager interface {
+	// CommitTransaction commits the context database transaction.
 	CommitTransaction(ctx *Context) error
+	// CreateDAO returns a new data access object.
 	CreateDAO(ctx *Context, nm string) (interface{}, error)
+	// EndTransaction ends the context database transaction.
 	EndTransaction(ctx *Context)
+	// RegisterDataSource registers a new mapping between a name and a data source.
 	RegisterDataSource(ds *DataSource)
+	// RegisterFactory registers the given factory with the data access object names it can generate.
 	RegisterFactory(f Factory)
+	// RollbackTransaction rollback the context database transaction.
 	RollbackTransaction(ctx *Context) error
+	// Source returns the data source associated with the given name.
 	Source(nm string) *DataSource
+	// StartTransaction start the context database transaction.
 	StartTransaction() (*Context, error)
 }
 
@@ -36,7 +44,7 @@ type BaseManager struct {
 	Factories map[string]Factory
 }
 
-// CommitTransaction
+// CommitTransaction commits the context database transaction.
 func (m *BaseManager) CommitTransaction(ctx *Context) error {
 	for _, dao := range ctx.daos {
 		if err := dao.Tx.Commit(); err != nil {
@@ -56,7 +64,7 @@ func (m *BaseManager) CreateDAO(ctx *Context, nm string) (interface{}, error) {
 	return fty.NewDataAccessObject(ctx, nm)
 }
 
-// EndTransaction
+// EndTransaction ends the context database transaction.
 func (m *BaseManager) EndTransaction(ctx *Context) {
 	ctx.daos = map[string]*DataAccessObject{}
 }
@@ -73,7 +81,7 @@ func (m *BaseManager) RegisterFactory(f Factory) {
 	}
 }
 
-// RollbackTransaction
+// RollbackTransaction rollback the context database transaction.
 func (m *BaseManager) RollbackTransaction(ctx *Context) error {
 	var errout error
 
@@ -90,7 +98,7 @@ func (m *BaseManager) Source(nm string) *DataSource {
 	return m.Sources[nm]
 }
 
-// StartTransaction
+// StartTransaction start the context database transaction.
 func (m *BaseManager) StartTransaction() (*Context, error) {
 	return NewContext(m), nil
 }
