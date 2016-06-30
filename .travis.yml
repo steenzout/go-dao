@@ -9,7 +9,7 @@ sudo: false
 env:
     CI_SERVICE=travis-ci
 
-install:
+before_install:
   - go get github.com/tools/godep
   - godep restore
 
