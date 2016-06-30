@@ -16,7 +16,6 @@
 package dao_test
 
 import (
-	"github.com/steenzout/go-dao/mock"
 	"github.com/stretchr/testify/suite"
 )
 
@@ -24,5 +23,4 @@ import (
 // BaseDataAccessObject struct.
 type DAOTestSuite struct {
 	suite.Suite
-	dao mock.MockDAO
 }
