@@ -8,24 +8,21 @@
 			"Rev": "5215b55f46b2b919f50a1df0eaa5886afe4e3b3d"
 		},
 		{
+			"ImportPath": "github.com/lib/pq",
+			"Comment": "go1.0-cutoff-102-ge2402a7",
+			"Rev": "e2402a7cd1e57e08a576b94cdfed36ae30366545"
+		},
+		{
+			"ImportPath": "github.com/lib/pq/oid",
+			"Comment": "go1.0-cutoff-102-ge2402a7",
+			"Rev": "e2402a7cd1e57e08a576b94cdfed36ae30366545"
+		},
+		{
 			"ImportPath": "github.com/pmezard/go-difflib/difflib",
 			"Rev": "792786c7400a136282c1664665ae0a8db921c6c2"
 		},
 		{
-			"ImportPath": "github.com/steenzout/go-mock-database/sql",
-			"Rev": "9c3031b304482061c6cd11abb1f02a676e19d8c7"
-		},
-		{
-			"ImportPath": "github.com/stretchr/objx",
-			"Rev": "1a9d0bb9f541897e62256577b352fdbc1fb4fd94"
-		},
-		{
 			"ImportPath": "github.com/stretchr/testify/assert",
-			"Comment": "v1.1.3-19-gd77da35",
-			"Rev": "d77da356e56a7428ad25149ca77381849a6a5232"
-		},
-		{
-			"ImportPath": "github.com/stretchr/testify/mock",
 			"Comment": "v1.1.3-19-gd77da35",
 			"Rev": "d77da356e56a7428ad25149ca77381849a6a5232"
 		},
