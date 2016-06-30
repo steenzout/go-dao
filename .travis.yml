@@ -9,10 +9,6 @@ sudo: false
 env:
     CI_SERVICE=travis-ci
 
-before_install:
-  - go get github.com/tools/godep
-  - godep restore
-
 script:
   - go test -v ./...
 
