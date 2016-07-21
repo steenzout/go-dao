@@ -29,19 +29,22 @@ func (s *ManagerTestSuite) Test() {
 	if err != nil {
 		s.Fail(err.Error())
 	}
-	s.NotNil(ctx)
-	defer s.manager.EndTransaction(ctx)
+	if s.NotNil(ctx) {
+		defer s.manager.EndTransaction(ctx)
 
-	dao, err := s.manager.CreateDAO(ctx, mock.DAOMock)
-	if err != nil {
-		s.Fail(err.Error())
-	}
+		dao, err := s.manager.CreateDAO(ctx, mock.DAOMock)
+		if err != nil {
+			s.Fail(err.Error())
+		}
 
-	mockDAO := dao.(mock.MockDAO)
-	mockDAO.MockSomething()
+		if s.NotNil(dao) {
+			mockDAO := dao.(mock.MockDAO)
+			mockDAO.MockSomething()
 
-	err = s.manager.CommitTransaction(ctx)
-	if err != nil {
-		s.Fail(err.Error())
+			err = s.manager.CommitTransaction(ctx)
+			if err != nil {
+				s.Fail(err.Error())
+			}
+		}
 	}
 }

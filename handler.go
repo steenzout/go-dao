@@ -23,19 +23,20 @@ type TransactionFunc func(m Manager, ctx *Context, args ...interface{}) (interfa
 func Process(m Manager, f TransactionFunc, args ...interface{}) (interface{}, error) {
 	ctx, err := m.StartTransaction()
 	if err != nil {
-		return err
+		return nil, err
 	}
 	defer m.EndTransaction(ctx)
 
-	err = f(m, ctx, args...)
+	v, err := f(m, ctx, args...)
 	if err != nil {
 		m.RollbackTransaction(ctx)
-		return err
+		return nil, err
 	}
 
 	if err = m.CommitTransaction(ctx); err != nil {
 		m.RollbackTransaction(ctx)
-		return err
+		return nil, err
 	}
-	return nil
+
+	return v, nil
 }

@@ -27,10 +27,16 @@ func init() {
 	dbinfo := fmt.Sprintf(
 		"user=%s host=%s port=%d dbname=%s sslmode=disable",
 		user, host, port, database)
+
 	db, err = sql.Open("postgres", dbinfo)
 	if err != nil {
 		log.Fatal(err)
 	}
+
+	if err = db.Ping(); err != nil {
+		log.Fatal(err)
+	}
+
 	log.Printf("connection to %v was established", dbinfo)
 }
 
@@ -49,9 +55,11 @@ func (s *DatabaseTestSuite) SetupSuite() {
 
 	s.manager = dao.NewBaseManager()
 	s.manager.RegisterDataSource(ds)
+	log.Printf("registered data source %v", ds)
 
 	s.factory = mock.NewFactory(ds)
 	s.manager.RegisterFactory(s.factory)
+	log.Printf("registered factory %v", s.factory)
 }
 
 // TestPackage test suite for the dao package.
