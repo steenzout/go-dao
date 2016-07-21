@@ -1,0 +1,20 @@
+package: github.com/steenzout/go-dao
+import:
+- package: github.com/davecgh/go-spew
+  version: 5215b55f46b2b919f50a1df0eaa5886afe4e3b3d
+  subpackages:
+  - spew
+- package: github.com/lib/pq
+  version: e2402a7cd1e57e08a576b94cdfed36ae30366545
+  subpackages:
+  - oid
+- package: github.com/pmezard/go-difflib
+  version: 792786c7400a136282c1664665ae0a8db921c6c2
+  subpackages:
+  - difflib
+- package: github.com/stretchr/testify
+  version: d77da356e56a7428ad25149ca77381849a6a5232
+  subpackages:
+  - assert
+  - require
+  - suite
