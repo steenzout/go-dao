@@ -1,6 +1,6 @@
 // Package dao provides a data access object library.
 //
-// Copyright 2016 Pedro Salgado
+// Copyright 2016-2017 Pedro Salgado
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -17,26 +17,29 @@
 package dao
 
 // TransactionFunc definition of a function wrapped in a database transaction context.
-type TransactionFunc func(m Manager, ctx *Context, args ...interface{}) (interface{}, error)
+type TransactionFunc func(ctx *Context) error
 
 // Process wrap database transaction handling around given TransactionFunc.
-func Process(m Manager, f TransactionFunc, args ...interface{}) (interface{}, error) {
-	ctx, err := m.StartTransaction()
+func Process(m Manager, f TransactionFunc) error {
+	var ctx *Context
+	var err error
+
+	ctx, err = m.StartTransaction()
 	if err != nil {
-		return nil, err
+		return err
 	}
 	defer m.EndTransaction(ctx)
 
-	v, err := f(m, ctx, args...)
+	err = f(ctx)
 	if err != nil {
 		m.RollbackTransaction(ctx)
-		return nil, err
+		return err
 	}
 
 	if err = m.CommitTransaction(ctx); err != nil {
 		m.RollbackTransaction(ctx)
-		return nil, err
+		return err
 	}
 
-	return v, nil
+	return nil
 }
