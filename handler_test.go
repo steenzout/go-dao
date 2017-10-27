@@ -27,14 +27,13 @@ type HandlerTestSuite struct {
 
 // TestProcess test for process function.
 func (s *HandlerTestSuite) TestProcess() {
-	f := func(m dao.Manager, ctx *dao.Context, args ...interface{}) (interface{}, error) {
-		dao, err := m.CreateDAO(ctx, mock.DAOMock)
+	f := func(ctx *dao.Context) error {
+		dao, err := s.manager.CreateDAO(ctx, mock.DAOMock)
 		if err != nil {
-			return nil, err
+			return err
 		}
-		return nil, dao.(mock.MockDAO).MockSomething()
+		return dao.(mock.MockDAO).MockSomething()
 	}
-	v, err := dao.Process(s.manager, f)
-	s.Nil(v)
+	err := dao.Process(s.manager, f)
 	s.Nil(err)
 }
