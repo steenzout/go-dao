@@ -16,19 +16,29 @@
 //
 package dao
 
+import (
+	"fmt"
+)
+
 // TransactionFunc definition of a function wrapped in a database transaction context.
 type TransactionFunc func(ctx *Context) error
 
 // Process wrap database transaction handling around given TransactionFunc.
-func Process(m Manager, f TransactionFunc) error {
+func Process(m Manager, f TransactionFunc) (err error) {
 	var ctx *Context
-	var err error
 
 	ctx, err = m.StartTransaction()
 	if err != nil {
 		return err
 	}
-	defer m.EndTransaction(ctx)
+	defer func() {
+		r := recover()
+		if r != nil {
+			m.RollbackTransaction(ctx)
+			err = fmt.Errorf("panic: %v", r)
+		}
+		m.EndTransaction(ctx)
+	}()
 
 	err = f(ctx)
 	if err != nil {
@@ -36,7 +46,8 @@ func Process(m Manager, f TransactionFunc) error {
 		return err
 	}
 
-	if err = m.CommitTransaction(ctx); err != nil {
+	err = m.CommitTransaction(ctx)
+	if err != nil {
 		m.RollbackTransaction(ctx)
 		return err
 	}

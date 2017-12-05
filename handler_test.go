@@ -16,6 +16,10 @@
 package dao_test
 
 import (
+	"errors"
+
+	"github.com/stretchr/testify/assert"
+
 	"github.com/steenzout/go-dao"
 	"github.com/steenzout/go-dao/mock"
 )
@@ -36,4 +40,16 @@ func (s *HandlerTestSuite) TestProcess() {
 	}
 	err := dao.Process(s.manager, f)
 	s.Nil(err)
+}
+
+// TestProcessWhenPanic test for process function that causes panic.
+func (s *HandlerTestSuite) TestProcessWhenPanic() {
+	f := func(ctx *dao.Context) error {
+		panic(errors.New("something happened"))
+	}
+	err := dao.Process(s.manager, f)
+	if s.NotNil(err) {
+		expected := errors.New("panic: something happened")
+		assert.Equal(s.T(), expected, err)
+	}
 }
