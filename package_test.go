@@ -9,9 +9,11 @@ import (
 	// load PostgreSQL driver
 	_ "github.com/lib/pq"
 
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
+
 	"github.com/steenzout/go-dao"
 	"github.com/steenzout/go-dao/mock"
-	"github.com/stretchr/testify/suite"
 )
 
 var db *sql.DB
@@ -67,4 +69,12 @@ func TestPackage(t *testing.T) {
 	suite.Run(t, new(DAOTestSuite))
 	suite.Run(t, new(HandlerTestSuite))
 	suite.Run(t, new(ManagerTestSuite))
+}
+
+// helpers
+
+func assertNoError(t *testing.T, err error) {
+	if err != nil {
+		assert.Fail(t, err.Error())
+	}
 }
