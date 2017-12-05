@@ -26,25 +26,19 @@ type ManagerTestSuite struct {
 
 func (s *ManagerTestSuite) Test() {
 	ctx, err := s.manager.StartTransaction()
-	if err != nil {
-		s.Fail(err.Error())
-	}
+	assertNoError(s.T(), err)
 	if s.NotNil(ctx) {
 		defer s.manager.EndTransaction(ctx)
 
 		dao, err := s.manager.CreateDAO(ctx, mock.DAOMock)
-		if err != nil {
-			s.Fail(err.Error())
-		}
+		assertNoError(s.T(), err)
 
 		if s.NotNil(dao) {
 			mockDAO := dao.(mock.MockDAO)
 			mockDAO.MockSomething()
 
 			err = s.manager.CommitTransaction(ctx)
-			if err != nil {
-				s.Fail(err.Error())
-			}
+			assertNoError(s.T(), err)
 		}
 	}
 }

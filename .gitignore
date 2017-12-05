@@ -1,6 +1,6 @@
 profile.cov
+profile.tmp
 vendor
-Godeps/Readme
 
 # Created by https://www.gitignore.io/api/go
 
